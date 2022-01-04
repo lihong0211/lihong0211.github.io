@@ -1,37 +1,52 @@
-## Welcome to GitHub Pages
+```sql
+INSERT
 
-You can use the [editor on GitHub](https://github.com/lihong0211/lihong0211.github.io/edit/main/index.md) to maintain and preview the content for your website in Markdown files.
+  INTO TABLE bi_live.activity_comp_track PARTITION (log_date = '20211223')
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+SELECT
 
-### Markdown
+  *
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+FROM
 
-```markdown
-Syntax highlighted code block
+  (
 
-# Header 1
-## Header 2
-### Header 3
+  SELECT
 
-- Bulleted
-- List
+    get_json_object(msg, '$.name') as name,
 
-1. Numbered
-2. List
+    get_json_object(msg, '$.actId') as act_id,
 
-**Bold** and _Italic_ and `Code` text
+    get_json_object(msg, '$.spm_id') as spm_id,
 
-[Link](url) and ![Image](src)
+    get_json_object(msg, '$.event_type') as type,
+
+    get_json_object(msg, '$.url') as url,
+
+    get_json_object(msg, '$.platform') as platform,
+
+    event_id,
+
+    event_time,
+
+    event_timestamp,
+
+    get_json_object(msg, '$.extend1') as extend1,
+
+    get_json_object(msg, '$.extend2') as extend2,
+
+    get_json_object(msg, '$.extend3') as extend3
+
+FROM
+
+	bili_live.dwd_live_module_view_d
+
+WHERE
+
+ log_date = '20211223'
+
+ and event_id = 'activity.comp.exp'
+
+  ) t
 ```
 
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/lihong0211/lihong0211.github.io/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
